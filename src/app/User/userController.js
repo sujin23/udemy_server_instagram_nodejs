@@ -3,6 +3,7 @@ const userProvider = require("../../app/User/userProvider");
 const userService = require("../../app/User/userService");
 const baseResponse = require("../../../config/baseResponseStatus");
 const {response, errResponse} = require("../../../config/response");
+const postProvider = require("../Post/postProvider");
 
 const regexEmail = require("regex-email");
 const {emit} = require("nodemon");
@@ -95,10 +96,10 @@ exports.getUserById = async function (req, res) {
 
 /*
     API No. 1.3
-    API Name: 유저 상세 조회 API
+    API Name: 유저 피드 조회 API
     [GET] /users/:userIdx
 */
-exports.getUser = async function(req, res) {
+exports.getUserFeed = async function(req, res) {
     /*
         Path Variable: userIdx
     */
@@ -112,9 +113,13 @@ exports.getUser = async function(req, res) {
         return res.send(errResponse(baseResponse.USER_USERIDX_LENGTH));
     }
 
-    const userIdxResult = await userProvider.retrieveUser(userIdx);
+    const userInfo = await userProvider.retrieveUserInfo(userIdx);
+    const userPosts = await postProvider.retrieveUserPosts(userIdx);
 
-    return res.send(response(baseResponse.SUCCESS, userIdxResult));
+    return res.send(response(baseResponse.SUCCESS, {
+        userInfo: userInfo,
+        userPosts: userPosts
+    }));
 }
 
 // TODO: After 로그인 인증 방법 (JWT)
