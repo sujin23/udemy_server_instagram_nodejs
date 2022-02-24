@@ -105,6 +105,14 @@ exports.getUserFeed = async function(req, res) {
     */
     const userIdx = req.params.userIdx;
 
+    // TODO: 10주차 JWT 적용 후 본인의 피드 조회인지 확인
+    // const userIdxFromJWT = req.verifiedToken.userIdx;
+    // let isMyFeed = true;
+
+    // if (userIdxFromJWT != userIdx) {
+    //     isMyFeed = false;
+    // }
+
     // validation
     if(!userIdx) {
         return res.send(errResponse(baseResponse.USER_USERIDX_EMPTY));
