@@ -15,11 +15,10 @@ exports.postSignIn = async function (email, pwd) {
         if (emailRows.length < 1) {
             return errResponse(baseResponse.SIGNIN_EMAIL_WRONG);
         }
-        // const hashedPassword = crypto
-        //     .createHash("sha512")
-        //     .update(pwd)
-        //     .digest("hex");
-        const hashedPassword = pwd;
+        const hashedPassword = crypto
+            .createHash("sha512")
+            .update(pwd)
+            .digest("hex");
 
         const passwordRows = await userProvider.passwordCheck(email);
 
